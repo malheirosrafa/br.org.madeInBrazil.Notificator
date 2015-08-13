@@ -1,0 +1,21 @@
+{
+  "name": "br.org.madeInBrazil.Notificator",
+  "version": "0.0.1",
+  "description": "Server for send notifications",
+  "main": "notificator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/malheirosrafa/br.org.madeInBrazil.Notificator.git"
+  },
+  "author": "Lucas Candalo, Rafael Malheiros",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/malheirosrafa/br.org.madeInBrazil.Notificator/issues"
+  },
+  "dependencies": {
+    "aws-sdk": "~2.1.45"
+  }
+}
