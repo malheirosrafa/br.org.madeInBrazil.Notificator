@@ -16,6 +16,9 @@
     "url": "https://github.com/malheirosrafa/br.org.madeInBrazil.Notificator/issues"
   },
   "dependencies": {
-    "aws-sdk": "~2.1.45"
+    "aws-sdk": "~2.1.45",
+    "mongoose": "~4.1.2",
+    "config": "^1.14.0",
+    "amqplib": "~0.3.2"
   }
 }
