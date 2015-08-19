@@ -1,10 +1,22 @@
 #!/usr/bin/env node
 
 var AWS = require('aws-sdk');
+var EndPoint = require('../model/endPoint');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/endPoint-server');
 
 AWS.config.update({
-    "region": "sa-east-1" 
+    "region": "sa-east-1"
 });
+
+//Retorna todos os documentos do db
+EndPoint.find(function(err, endpoints) {
+    if(err) return console.error(err);
+    console.log(endpoints);
+});
+
+return false;
 
 var appName = 'embelezapp-android'
 var userToken = '13c79aee-d2eb-3375-91d4-b7115cd16463'
