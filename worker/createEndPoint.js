@@ -13,8 +13,6 @@ var AWS      = require('aws-sdk');
 var mongoose = require('mongoose');
 var EndPoint = require('../model/endPoint');
 
-var aws = config.get('aws');
-
 mongoose.connect('mongodb://localhost/endPoint-server');
 
 AWS.config.update({
@@ -27,8 +25,7 @@ function onError(error) {
 }
 
 amqp.connect('amqp://'+process.env.USER_NAME+':'+process.env.PASSWORD+'@'+process.env.QUEUE_SERVER_ADDRESS, function(err, conn) {
-  conn.createChannel(function(err, ch) {
-
+    conn.createChannel(function(err, ch) {
     var ex = 'notificator';
 
     ch.assertExchange(ex, 'fanout', {durable: false});
@@ -44,34 +41,35 @@ amqp.connect('amqp://'+process.env.USER_NAME+':'+process.env.PASSWORD+'@'+proces
             console.log(" [x] Received token %s", element.token);
             console.log(" [x] Received platform %s", element.platform);
 
+            var platformArn;
+            switch(element.platform) {
+                case 'android': platformArn =  process.env.ANDROID_ARN;break;
+                case 'ios'    : platformArn =  process.env.IOS_ARN;break;
+                case 'ios-dev': platformArn =  process.env.IOS_DEV_ARN;break;
+                default       : console.log('Platform does not exist');process.exit(1);
+            }
+
             //Gerando o EndPoint
             var params = {
-
-              switch(element.platform) {
-                  case 'android': PlatformApplicationArn: process.env.ANDROID_ARN;break;
-                  case 'ios'    : PlatformApplicationArn: process.env.IOS_ARN;break;
-                  case 'ios-dev': PlatformApplicationArn: process.env.IOS_DEV_ARN;break;
-                  default       : console.log('Platform does not exist');process.exit(1);
-              }
-
+              PlatformApplicationArn: platformArn,
               Token: element.token
             };
 
             var sns = new AWS.SNS();
 
             sns.createPlatformEndpoint(params, function(err, data) {
-              if (err) {
-               	console.log(err, err.stack);
-			  }
-              else {
- 			  	console.log(data);
-              	var endPoint = new EndPoint({
-                	token: element.token,
-                	arn: data.EndpointArn,
-                	platform: element.platform
-            	});
-            	endPoint.save();
-			  }
+                if (err) {
+               	    console.log(err, err.stack);
+			    }
+                else {
+ 			  	    console.log(data);
+              	    var endPoint = new EndPoint({
+                        token: element.token,
+                	    arn: data.EndpointArn,
+                	    platform: element.platform
+            	    });
+            	    endPoint.save();
+			    }
 		    });
         }, {noAck: true});
      });
