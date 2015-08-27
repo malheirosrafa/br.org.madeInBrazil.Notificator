@@ -7,11 +7,12 @@
 
 //Recebe a plataforma e o token da fila para gerar o EndPointEnd
 
-var amqp = require('amqplib/callback_api');
-var config = require('config');
-var AWS = require('aws-sdk');
-var EndPoint = require('../model/endPoint');
+var amqp     = require('amqplib/callback_api');
+var config   = require('config');
+var AWS      = require('aws-sdk');
 var mongoose = require('mongoose');
+var EndPoint = require('../model/endPoint');
+
 var aws = config.get('aws');
 
 mongoose.connect('mongodb://localhost/endPoint-server');
@@ -25,7 +26,7 @@ function onError(error) {
 	console.log('problem with request: ' + error.message);
 }
 
-amqp.connect('amqp://'+process.env.USER_NAME+':'+process.env.PASSWORD+'@queue.embelezapp.com.br', function(err, conn) {
+amqp.connect('amqp://'+process.env.USER_NAME+':'+process.env.PASSWORD+'@'+process.env.QUEUE_SERVER_ADDRESS, function(err, conn) {
   conn.createChannel(function(err, ch) {
 
     var ex = 'notificator';
@@ -44,10 +45,15 @@ amqp.connect('amqp://'+process.env.USER_NAME+':'+process.env.PASSWORD+'@queue.em
             console.log(" [x] Received platform %s", element.platform);
 
             //Gerando o EndPoint
-
             var params = {
 
-              PlatformApplicationArn: aws.platforms[element.platform],
+              switch(element.platform) {
+                  case 'android': PlatformApplicationArn: process.env.ANDROID_ARN;break;
+                  case 'ios'    : PlatformApplicationArn: process.env.IOS_ARN;break;
+                  case 'ios-dev': PlatformApplicationArn: process.env.IOS_DEV_ARN;break;
+                  default       : console.log('Platform does not exist');process.exit(1);
+              }
+
               Token: element.token
             };
 

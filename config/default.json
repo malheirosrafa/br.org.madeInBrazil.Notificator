@@ -1,14 +1,5 @@
 {
-  "db": {
-    "host": "mongodb://localhost/endPoint-server"
-  },
-  "aws": {
-  "access_key_id": "AKIAJGEITPPPZEOFRAFA",
-  "secret_access_key": "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",
-  "platforms": {
-    "android": "arn:aws:sns:sa-east-1:326627603165:app/GCM/embelezapp-android",
-    "ios": "arn:aws:sns:sa-east-1:326627603165:app/APNS/embelezapp-ios-production",
-    "ios-dev": "arn:aws:sns:sa-east-1:326627603165:app/APNS_SANDBOX/embelezapp-ios-dev"			
-	}
-  }
+    "db": {
+        "host": "mongodb://localhost/endPoint-server"
+    }
 }

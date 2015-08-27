@@ -19,6 +19,7 @@
     "aws-sdk": "~2.1.45",
     "mongoose": "~4.1.2",
     "config": "^1.14.0",
-    "amqplib": "~0.3.2"
+    "amqplib": "~0.3.2",
+    "restify": "~4.0.0"
   }
 }
