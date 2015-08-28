@@ -47,12 +47,7 @@ server.post("/token/:token", function(req, res, next){
            A forma de envio de mensagens para Android e ios sao diferentes.*/
         if(endpoints.platform == 'android') {
             var androidMessage = {
-                //default: req.params.message,
-                GCM: {
-                    data: {
-                        message: req.params.message
-                    }
-                }
+                "GCM": "{ \"data\": { \"message\":\""+req.params.message+"\"}}"
             };
 
             androidMessage = JSON.stringify(androidMessage);
