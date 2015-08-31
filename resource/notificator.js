@@ -23,9 +23,10 @@ var server = restify.createServer({
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
+server.use(restify.CORS());
 
-server.listen(8080, function () {
-    console.log("Server "+server.name+" listening in port 8080");
+server.listen(8889, function () {
+    console.log("Server "+server.name+" listening in port 8889");
 });
 
 server.post("/token/:token", function(req, res, next){
@@ -38,7 +39,8 @@ server.post("/token/:token", function(req, res, next){
         if(endpoints === null) return res.send(404);
 
 		res.writeHead(200, {
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin':'*'
         });
 
         res.end();
