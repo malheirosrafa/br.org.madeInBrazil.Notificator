@@ -57,17 +57,11 @@ server.post("/token/:token", function(req, res, next){
                 TargetArn: endpoints.arn,
                 Message: androidMessage,
                 MessageStructure: 'json'
-                //Subject: 'TestSNS'
             };
         }
-
-        else {
+        else if(endpoints.platform == 'ios'){
             var iosMessage = {
-                APNS_SANDBOX: {
-                    aps: {
-                        alert: req.params.message
-                    }
-                }
+                "APNS": "{\"aps\":{\"alert\": \""+req.params.message+"\"} }"
             };
 
             iosMessage = JSON.stringify(iosMessage);
@@ -76,7 +70,19 @@ server.post("/token/:token", function(req, res, next){
                 TargetArn: endpoints.arn,
                 Message: iosMessage,
                 MessageStructure: 'json'
-                //Subject: 'TestSNS'
+            };
+        }
+        else {
+            var iosDevMessage = {
+                "APNS_SANDBOX":"{\"aps\":{\"alert\":\""+req.params.message+"\"}}"
+            };
+
+            iosDevMessage = JSON.stringify(iosDevMessage);
+
+            var params = {
+                TargetArn: endpoints.arn,
+                Message: iosDevMessage,
+                MessageStructure: 'json'
             };
         }
 
